@@ -1,6 +1,6 @@
 #main {
   position: absolute;
-   height: 100vh;
+   height: 120%;
    width: 100%;
   
  }
@@ -22,9 +22,9 @@
  }
  .back-card {
    border-radius: 40px !important;
-   color: white;
+   color: rgb(255, 253, 253);
    background: linear-gradient(to bottom right, #707070, #434647);
-   text-shadow: 2px 2px 2px #707070;
+   text-shadow: 2px 2px 2px #212529;
  }
  
  .city-name {

@@ -3,18 +3,16 @@
     <div class="container my-5"  style="max-width: 400px; min-width: 360px">
      <h1 class="title text-center">Weather App</h1>
      <form class="search-location" v-on:submit.prevent="getWeather"> 
-      <input type="text" class="form-control text-muted form-rounded p-4 shadow-sm"
-      placeholder="Search.." v-model="citySearch" autocomplete="off"/>
+       <input type="text" class="form-control text-muted form-rounded p-4 shadow-sm"
+       placeholder="Search.." v-model="citySearch" autocomplete="off" style="font-weight: 500"/>
      </form>
+     <p class="text-center my-3" v-if="cityFound">No city found</p>
 
-
-
-
-      <div class="card rounded my-3 shadow-lg back-card overflow-hidden" v-if="visible">
-
-       <!-- weather animation container -->
-       <div>
-          <div icon="sunny"  v-if="clearSky" data-label="Sunny">
+      <div class="card rounded my-3 shadow-lg back-card overflow-hidden" >
+        
+         <!-- weather animation container -->
+         <div>
+          <div icon="sunny" v-if="clearSky" data-label="Sunny">
             <span class="sun"></span>
           </div>
 
@@ -51,32 +49,33 @@
             <span class="cloud"></span>
           </div>
           <div icon="nightmoon" v-if="clearNight" data-label="Cool!">
-            <span class="moon"></span>
+            <span class="moon"></span>]
             <span class="meteor"></span>
           </div>
         </div>
 
 
-      <div class="card-top text-center" style="margin-botton: 15rem" >
-        <div class="city-name my-3">
-          <p>{{ weather.cityName }}</p>
-          <span> . . . </span>
-          <p class="">{{ weather.country }}</p>
-        </div>
-      </div>
+
+       <div class="card-top text-center" style="margin-botton: 15rem" >
+         <div class="city-name my-3">
+           <p>{{ weather.cityName }}</p>
+           <span> . . . </span>
+           <p class="">{{ weather.country }}</p>
+         </div>
+       </div>
 
 
-      <div class="card-body">
+       <div class="card-body">
         <div class="card-mid">
           <div class="row">
-            <div class="col-12 text-center temp">
-              <span>{{ weather.temperature }}&deg;C</span>
-              <p class="my-4">{{ weather.description }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
+             <div class="col-12 text-center temp">
+               <span> {{ weather.temperature }}&deg;C </span>
+               <p class="my-4">{{ weather.description }}</p>
+             </div>
+           </div>
+         </div>
+       </div>
+        <div class="row">
               <div class="col d-flex justify-content-between px-5 mx-5">
                 <p>
                   <img src="./assets/down.svg" alt="" />
@@ -98,7 +97,7 @@
             <span>Humidity</span>
           </div>
         </div>
-      </div>
+    </div>
     </div>
   </div>
 </template>
@@ -109,6 +108,8 @@
 export default {
   data() {
     return {
+      
+      cityFound: false,
       visible: false,
       stormy: false,
       cloudy: false,
@@ -135,14 +136,14 @@ export default {
       console.log(this.citySearch);
       const key = "4fc0db0dfb60e1db34f2b956fd3010dd";
       const baseURL = `https://api.openweathermap.org/data/2.5/weather?q=${this.citySearch}&appid=${key}&units=metric`;
-
-      //fetch weather
-      try {
+ //fetch weather
+ try {
         const response = await fetch(baseURL);
         const data = await response.json();
         console.log(data);
         this.citySearch = "";
         this.weather.cityName = data.name;
+        console.log(this.weather.cityName)
         this.weather.country = data.sys.country;
         this.weather.temperature = Math.round(data.main.temp);
         this.weather.description = data.weather[0].description;
@@ -166,13 +167,7 @@ export default {
           this.clearNight = false;
           this.snowy = false;
         }
-        if (mainWeather.includes("Clouds")) {
-          this.stormy = false;
-          this.cloudy = true;
-          this.clearSky = false;
-          this.clearNight = false;
-          this.snowy = false;
-        }
+        
         if (
           mainWeather.includes("Thunderstorm") ||
           mainWeather.includes("Rain")
@@ -209,6 +204,7 @@ export default {
       } catch (error) {
         console.log(error);
         this.cityFound = true;
+        this.visible = false;
       }
     },
   },
@@ -216,10 +212,6 @@ export default {
 </script>
 
 <style>
-
-
 @import "./assets/animation.css";
 @import "./assets/custom.css";
-
-
 </style>
