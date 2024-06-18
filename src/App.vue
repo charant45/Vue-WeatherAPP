@@ -1,17 +1,22 @@
 <template>
-  <div id="main" :class="isDay ? 'day': 'night'">
-    <div class="container my-5"  style="max-width: 400px; min-width: 360px">
-     <h1 class="title text-center">Weather App</h1>
-     <form class="search-location" v-on:submit.prevent="getWeather"> 
-       <input type="text" class="form-control text-muted form-rounded p-4 shadow-sm"
-       placeholder="Search.." v-model="citySearch" autocomplete="off" style="font-weight: 500"/>
-     </form>
-     <p class="text-center my-3" v-if="cityFound">No city found</p>
+  <div id="main" :class="isDay ? 'day' : 'night'">
+    <div class="container my-5" style="max-width: 400px; min-width: 360px">
+      <h1 class="title text-center">Weather App</h1>
+      <form class="search-location" v-on:submit.prevent="getWeather">
+        <input
+          type="text"
+          class="form-control text-muted form-rounded p-4 shadow-sm"
+          placeholder="Search.."
+          v-model="citySearch"
+          autocomplete="off"
+          style="font-weight: 500"
+        />
+      </form>
+      <p class="text-center my-3" v-if="cityFound">No city found</p>
 
-      <div class="card rounded my-3 shadow-lg back-card overflow-hidden" >
-        
-         <!-- weather animation container -->
-         <div>
+      <div class="card rounded my-3 shadow-lg back-card overflow-hidden">
+        <!-- weather animation container -->
+        <div>
           <div icon="sunny" v-if="clearSky" data-label="Sunny">
             <span class="sun"></span>
           </div>
@@ -54,38 +59,35 @@
           </div>
         </div>
 
+        <div class="card-top text-center" style="margin-botton: 15rem">
+          <div class="city-name my-3">
+            <p>{{ weather.cityName }}</p>
+            <span> . . . </span>
+            <p class="">{{ weather.country }}</p>
+          </div>
+        </div>
 
-
-       <div class="card-top text-center" style="margin-botton: 15rem" >
-         <div class="city-name my-3">
-           <p>{{ weather.cityName }}</p>
-           <span> . . . </span>
-           <p class="">{{ weather.country }}</p>
-         </div>
-       </div>
-
-
-       <div class="card-body">
-        <div class="card-mid">
-          <div class="row">
-             <div class="col-12 text-center temp">
-               <span> {{ weather.temperature }}&deg;C </span>
-               <p class="my-4">{{ weather.description }}</p>
-             </div>
-           </div>
-         </div>
-       </div>
-        <div class="row">
-              <div class="col d-flex justify-content-between px-5 mx-5">
-                <p>
-                  <img src="./assets/down.svg" alt="" />
-                  {{ weather.lowTemp }}&deg;C
-                </p>
-                <p>
-                  <img src="./assets/up.svg" alt="" />
-                  {{ weather.highTemp }}&deg;C
-                </p>
+        <div class="card-body">
+          <div class="card-mid">
+            <div class="row">
+              <div class="col-12 text-center temp">
+                <span> {{ weather.temperature }}&deg;C </span>
+                <p class="my-4">{{ weather.description }}</p>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col d-flex justify-content-between px-5 mx-5">
+            <p>
+              <img src="./assets/down.svg" alt="" />
+              {{ weather.lowTemp }}&deg;C
+            </p>
+            <p>
+              <img src="./assets/up.svg" alt="" />
+              {{ weather.highTemp }}&deg;C
+            </p>
+          </div>
         </div>
         <div class="card-bottom px-5 py-4 row">
           <div class="col text-center">
@@ -97,18 +99,15 @@
             <span>Humidity</span>
           </div>
         </div>
-    </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-
-
 export default {
   data() {
     return {
-      
       cityFound: false,
       visible: false,
       stormy: false,
@@ -136,14 +135,14 @@ export default {
       console.log(this.citySearch);
       const key = "4fc0db0dfb60e1db34f2b956fd3010dd";
       const baseURL = `https://api.openweathermap.org/data/2.5/weather?q=${this.citySearch}&appid=${key}&units=metric`;
- //fetch weather
- try {
+      //fetch weather
+      try {
         const response = await fetch(baseURL);
         const data = await response.json();
         console.log(data);
         this.citySearch = "";
         this.weather.cityName = data.name;
-        console.log(this.weather.cityName)
+        console.log(this.weather.cityName);
         this.weather.country = data.sys.country;
         this.weather.temperature = Math.round(data.main.temp);
         this.weather.description = data.weather[0].description;
@@ -167,7 +166,7 @@ export default {
           this.clearNight = false;
           this.snowy = false;
         }
-        
+
         if (
           mainWeather.includes("Thunderstorm") ||
           mainWeather.includes("Rain")
